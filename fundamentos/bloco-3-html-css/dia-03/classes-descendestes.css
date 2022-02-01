@@ -1,0 +1,42 @@
+ol{
+    background-color: yellow;
+}
+
+ol li:nth-child(2n + 2 ) {
+    color: greenyellow;
+    font-weight: bold;
+}
+
+ol li:nth-child(2n + 1) {
+    text-transform: lowercase;
+    font-weight: bold;
+}
+
+h1,h3 {
+    color: red;
+    border: 1px solid black;
+}
+
+h1 {
+    font-weight: 40px;
+}
+
+li {
+    font-weight: 20px;
+}
+
+.first {
+    color: blue;
+}
+
+.java {
+    background-color: pink;
+}
+
+.hover:hover {
+    font-weight: bold;
+}
+
+.color1:hover {
+    fon;
+}
