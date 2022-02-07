@@ -81,12 +81,12 @@ console.log(comparativo);
 
 /* Exercicio 8 */
 
-var aa =[]
+var aa =[a]
 
-for (var i = 0; i < (numbers.length) ; i++) {
+for (var a = 0; a < 25 ; a++) {
 
-    aa = aa.push(i)
-    
+    aa = aa.push[a];
+
 }
 
 
