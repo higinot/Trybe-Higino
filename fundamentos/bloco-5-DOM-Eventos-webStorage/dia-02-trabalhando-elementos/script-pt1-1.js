@@ -28,4 +28,5 @@ previousElementSibling : retorna o elemento anterior.
 */
 
 
-console.log(document.getElementById(("#primeiroFilho").nextElementSibling);
+console.log(document.getElementById(("#primeiroFilho").nextElementSibling); // Acessar o elementoOndeVoceEsta
+
