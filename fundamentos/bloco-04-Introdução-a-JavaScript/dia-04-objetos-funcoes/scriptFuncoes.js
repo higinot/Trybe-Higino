@@ -71,14 +71,29 @@ function numsCharacter (namesArray) {
 
 console.log(numsCharacter(['José', 'Lucas', 'Nádia', 'Fernanda', 'Cairo', 'Joana']));
 
-function maiorPalavra(palavras) {
-    let maiorPalavra = palavras[0];
-    for (let indice in palavras) {
-      if (maiorPalavra.length < palavras[indice].length) {
-        maiorPalavra = palavras[indice];
-      }
+/* Exercicio 5 - Crie uma função que receba um array de inteiros e retorne o inteiro que mais se repete */
+
+function numRepet (nums) {
+    let count = 0;
+    let countHight = 0;
+
+    for (let index in nums){
+        console.log(nums[index]);
+        let num = nums[index]
+        count = 0;
+        for (let index in nums){
+            console.log(nums[index] + ":" + num);
+            if (num === nums[index]){
+                count = count + 1;
+            }
+        }
+        if (count > countHight){
+            countHight = count;
+        }
+
     }
-    return maiorPalavra;
-  }
-  
-  console.log(maiorPalavra(['José', 'Lucas', 'Nádia', 'Fernanda', 'Cairo', 'Joana']));
+    return countHight;
+
+}
+
+console.log(numRepet([1,2,3,1,1,1]));
