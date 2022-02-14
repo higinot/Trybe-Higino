@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Exercício 5.1</title>
+    
+    <style>
+      main, section {
+        border-color: black;
+        border-style: solid;
+      }
+
+      .title {
+        text-align: center;
+      }
+
+      .main-content {
+        background-color: yellow;
+      }
+
+      .main-content .center-content {
+        background-color: red;
+        width: 50%;
+        margin: 0 auto;
+      }
+
+      .main-content .center-content p {
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <header> 
+      <h1 class="title">Exercício 5.1 - JavaEscripito </h1>
+    </header>    
+    <main class="main-content">
+      <section class="center-content">
+        <p id="youNextTwoYears">Texto padrão do nosso site</p>
+        <p>-----</p>
+        <p>Trybe</p>
+      </section>
+    </main>
+    <script>
+        /* Exercicio 1  */
+        let youNextTwoYears = document.getElementById("youNextTwoYears")
+        youNextTwoYears.innerText = "Você será foda!"
+
+        /* Exercicio 2 - Informação importante, precisa colocar a posição da propriedade*/
+        let colorByTrybe = document.getElementsByClassName('main-content')[0];
+        colorByTrybe.style.backgroundColor = "rgb(76,164,109)"
+
+        /* Exercicio 3 -  Foi pego o segundo por que é onde estava a propriedade da cor vermelha*/
+        let changeSquare = document.getElementsByClassName('center-content')[0]
+        changeSquare.style.backgroundColor = "white"
+
+        /* Exercicio 4 */
+
+        function changeErrorText() {
+            let title = document.getElementsByTagName('h1')[0];
+            title.innerHTML = "Exercício 5.1 - JavaScript"
+        }
+        changeErrorText();
+
+        /* Exercicio 5 */
+
+        function changeTextToCapLock() {
+            let text = document.getElementsByTagName('p')[0];
+            text.innerHTML = text.innerHTML.toUpperCase();
+        }
+        changeTextToCapLock();
+
+        /* Exercicio 6 */
+
+        function showAllTagP() {
+            let showTagP = document.getElementsByTagName('p');
+            for (let index = 0; index < showTagP.length; index += 1){
+                console.log(showTagP[index].innerHTML);
+            }
+        }
+        showAllTagP();
+
+        /*
+        Aqui você vai modificar os elementos já existentes utilizando apenas as funções:
+        - document.getElementById()
+        - document.getElementsByClassName()
+        - document.getElementsByTagName()
+ Crie uma função que mude o texto na tag <p> para uma descrição de como você se vê daqui a 2 anos. (Não gaste tempo pensando no texto e sim realizando o exercício)
+ Crie uma função que mude a cor do quadrado amarelo para o verde da Trybe (rgb(76,164,109)).
+ Crie uma função que mude a cor do quadrado vermelho para branco.
+ Crie uma função que corrija o texto da tag <h1>.
+ Crie uma função que modifique todo o texto da tag <p> para maiúsculo.
+ Crie uma função que exiba o conteúdo de todas as tags <p> no console.
+        */
+    </script>
+  </body>
+</html>
