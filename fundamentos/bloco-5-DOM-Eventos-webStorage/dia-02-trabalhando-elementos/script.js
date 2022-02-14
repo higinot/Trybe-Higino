@@ -76,6 +76,13 @@ const elementDelet = document.createElement('section');
 elementMain.appendChild(elementDelet);
 elementMain.removeChild(elementDelet);
 
+document.cookie = 'email=engprodhigino@gmail.com'
+document.cookie = 'email=isabella@email.com; expires=Thu, 17 Dec 2025 12:00:00 UTC';
+document.cookie = 'email=isabella@email.com; expires=Thu, 17 Dec 2025 12:00:00 UTC; path=/';
+
+const myCookie = document.cookie;
+console.log(myCookie) // email=isabella@email.com
+
 /*  */
 
 
