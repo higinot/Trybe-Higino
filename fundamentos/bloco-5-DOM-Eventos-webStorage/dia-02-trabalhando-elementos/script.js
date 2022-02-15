@@ -72,18 +72,28 @@ for (let index = 0; index <= 3; index += 1){
 
 /*Remova a `section` criado no passo 5  */
 
-const elementDelet = document.createElement('section');
-elementMain.appendChild(elementDelet);
-elementMain.removeChild(elementDelet);
+let childLeftContent = document.getElementsByClassName('left-content')[0];
+let childMain = document.getElementsByClassName('main-content');
 
-document.cookie = 'email=engprodhigino@gmail.com'
-document.cookie = 'email=isabella@email.com; expires=Thu, 17 Dec 2025 12:00:00 UTC';
-document.cookie = 'email=isabella@email.com; expires=Thu, 17 Dec 2025 12:00:00 UTC; path=/';
+elementMain.removeChild(childLeftContent);
 
-const myCookie = document.cookie;
-console.log(myCookie) // email=isabella@email.com
+/* Centralize a section criado no passo 6 (right-content)  */
 
-/*  */
+let rightContent = document.getElementsByClassName('right-content')[0];
+rightContent.style.marginRight ='auto';
+
+/* Trocando o backgroud color do element pai pelo elemento filho */
+
+let centerContent = document.getElementsByClassName('center-content')[0];
+
+centerContent.parentNode.style.backgroundColor = 'green';
+
+/* Remova os dois ultimos elementos da ul */
+
+elementUl.lastChild.remove();
+elementUl.lastChild.remove();
+
+
 
 
 
