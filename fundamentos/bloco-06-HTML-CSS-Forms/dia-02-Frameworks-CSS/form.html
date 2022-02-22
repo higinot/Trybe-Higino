@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Cabeçalho da página</h1>
+    </header>
+
+    <form action="" method="get" id="form"> 
+        <label for="text-name" class="labels" > Nome:
+            <input type="text" id="text-name" placeholder="Digite seu nome" maxlength="40" minlength="10" required>
+        </label>
+
+        <label for="text-email" class="labels">E-mail:
+            <input type="email" id="text-email" placeholder="Digite seu e-mail" maxlength="40" minlength="10" required>
+        </label>
+
+        <div id="div-options">
+            <input type="radio" name="select-option" id="options1" required>
+            <label for="options1">Cidade</label>
+            <input type="radio" name="select-option" id="options2" required>
+            <label for="options2">Campo</label>
+            <input type="radio" name="select-option" id="options3" required>
+            <label for="options3">Praia</label>
+            <input type="radio" name="select-option" id="options4" required>
+            <label for="options4">Montanhas</label>
+
+        </div>
+
+        <label for="text-respost" class="labels"> Por que você deveria ser a desenvolvedora escolhida pelo concurso Trybe:
+            <textarea name="text-respost" id="text-respost" cols="30" rows="12"></textarea>
+        </label>
+
+        <label for="input-date" class="labels">Data:
+            <input type="date" name="date" id="input-date" required>
+        </label>
+
+
+        <div class="labels">
+
+            <input type="checkbox" name="checkOne" id="check"> 
+            <label for="input-check" > Gostaria de receber outras incríveis oportunidades oferecidas pela Trybe.
+            </label>
+            <br>
+
+            <input type="checkbox" name="checkTwo" id="check"> 
+            <label for="input-check"> Concordo que imagens de minhas férias poderão ser usadas na divulgação de concursos futuros.
+            </label>
+        </div>
+
+        <div id="btn-sendReset">
+            <label for="btn-send">
+                <input type="submit" value="Enviar" id="btn-send">
+            </label>
+
+            <label for="btn-reset">
+                <input type="reset" value="Apagar" id="btn-reset">
+            </label>
+        </div>
+
+    </form>
+
+    <script src="script.js"></script>
+    
+</body>
+</html>
