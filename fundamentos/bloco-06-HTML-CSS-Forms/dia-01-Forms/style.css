@@ -1,0 +1,58 @@
+.{
+    margin: auto;
+    padding: 0px;
+
+}
+
+#form {
+    border: solid 2px black;
+    width: 680px;
+    height: 400px;
+}
+
+#text-name, #text-email {
+    margin: 10px 0 0 10px;
+}
+
+.labels{
+    margin-left: 10px;
+    display: block;
+}
+
+#div-options {
+    margin: 10px 0 10px 5px;
+}
+
+#text-respost {
+    display: block;
+    margin-top: 5px;
+}
+
+#input-date {
+    margin: 10px 0 10px 0;
+}
+
+#input-check {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#btn-send, #btn-reset {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100px;
+    border-radius: 2px;
+}
+
+body {
+    background-color: whitesmoke;
+}
+
+form {
+    background-color: white;
+}
+
+
+
+
+
