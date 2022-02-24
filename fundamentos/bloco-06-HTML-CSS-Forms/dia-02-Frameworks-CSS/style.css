@@ -1,13 +1,15 @@
-.{
-    margin: auto;
-    padding: 0px;
-
-}
+* {
+    margin: 10;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
 #form {
     border: solid 2px black;
-    width: 680px;
-    height: 400px;
+    width:max-content;
+    height:max-content;
+    margin:auto;
+    padding: 10px 10px 5px 10px;
 }
 
 #text-name, #text-email {
@@ -32,11 +34,6 @@
     margin: 10px 0 10px 0;
 }
 
-#input-check {
-    display: block;
-    margin-bottom: 5px;
-}
-
 #btn-send, #btn-reset {
     margin-top: 10px;
     padding: 10px;
@@ -50,6 +47,11 @@ body {
 
 form {
     background-color: white;
+    padding: 10px;
+}
+
+#check {
+    display: inline;
 }
 
 
