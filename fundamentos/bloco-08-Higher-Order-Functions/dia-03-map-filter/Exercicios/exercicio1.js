@@ -1,5 +1,3 @@
-
-/* Exercicio 1 - Encontre o nome da primeira pessoa autora do livro nascida no ano de 1947 */
 const books = [
     {
       id: 1,
@@ -62,33 +60,23 @@ const books = [
       releaseYear: 1928,
     },
   ];
+  
+/* 1 - Crie um array com strings no formato NOME_DO_LIVRO - GÊNERO_DO_LIVRO - NOME_DA_PESSOA_AUTORA */
 
-  function authorBornIn1947() {
-    
-    return books.find((book) => book.author.birthYear === 1947).author.name;
+const expectedResult = [
+    'As Crônicas de Gelo e Fogo - Fantasia - George R. R. Martin',
+    'O Senhor dos Anéis - Fantasia - J. R. R. Tolkien',
+    'Fundação - Ficção Científica - Isaac Asimov',
+    'Duna - Ficção Científica - Frank Herbert',
+    'A Coisa - Terror - Stephen King',
+    'O Chamado de Cthulhu - Terror - H. P. Lovecraft',
+  ];
+  
+  function formatedBookNames() {
+    return books.map((item) => `${item.name} - ${item.genre} - ${item.author.name}`)
   }
 
-  console.log(authorBornIn1947());
+  console.log(formatedBookNames());
 
-  /* 2 - Retorne o nome do livro de menor nome. */
 
-  function smallerName() {
-    let nameBook;
 
-    books.forEach((item) => {
-        if (!nameBook || item.name.length < nameBook.length) {
-            nameBook = item.name;
-        }
-    } )
-    return nameBook;
-  }
-
-  console.log(smallerName());
-
-  /* 3 - Encontre o primeiro livro cujo nome possui 26 caracteres.  */
-
-  function getNamedBook() {
-    return books.find((item) => item.name.length === 26).name;
-  }
-
-/* 4 - Ordene os livros por data de lançamento em ordem decrescente. */
