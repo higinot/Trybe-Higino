@@ -1,0 +1,16 @@
+{
+  "name": "bloco-01-assincrono-callbacks",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "jest": "^27.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
