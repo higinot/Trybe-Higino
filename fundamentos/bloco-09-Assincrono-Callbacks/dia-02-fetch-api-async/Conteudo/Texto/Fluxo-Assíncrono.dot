@@ -1,0 +1,3 @@
+Relembrando o fluxo assíncrono
+
+Vamos relembrar rapidamente como funciona a ordem de execução de funções no javascript : as funções são lidas de cima para baixo e suas execuções são colocadas em uma fila. Assim, a primeira função lida é a primeira a ser executada. Quando sua execução termina, ela "entrega seu retorno", permitindo que o mesmo processo ocorra com a próxima função da fila.

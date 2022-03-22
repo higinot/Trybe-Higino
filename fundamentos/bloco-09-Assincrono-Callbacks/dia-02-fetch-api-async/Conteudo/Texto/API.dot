@@ -25,3 +25,11 @@ Como utilizar APIs na minha aplicação?
     Entenda o formato dos dados disponíveis;
 
     Faça requests e receba responses da API com os dados que você deseja receber.
+
+Fazendo uma requisição a uma API
+
+Você pode fazer requisições a uma API de várias formas. Uma delas é no terminal.
+
+No exemplo a seguir, vamos fazer um request para uma API , que retorna um JSON como response .
+
+wget 'https://pokeapi.co/api/v2/pokemon/ditto' -O - -q
