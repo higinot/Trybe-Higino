@@ -34,10 +34,10 @@ const greet = (temperature) =>
 }; */
 
 const sendMarsTemperature = (callback) => {
-    const info = getMarsTemperature();
+  const info = getMarsTemperature();
 
-    setTimeout(() => callback(info), messageDelay());
-}
+  setTimeout(() => callback(info), messageDelay());
+};
 
 sendMarsTemperature(temperatureInFahrenheit); // imprime "It is currently 47ºF at Mars", por exemplo
 sendMarsTemperature(greet); // imprime "Hi there! Curiosity here. Right now is 53ºC at Mars", por exemplo
