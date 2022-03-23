@@ -5,3 +5,14 @@ Existem 2 principais ferramentas que podemos usar para gerir o fluxo assíncrono
 Vamos criar uma função que faz um fetch apenas para um endpoint específico. Entenda endpoint , em se tratando de APIs, como sendo o caminho (url) que retorna alguma informação específica da API. Para isso, vamos usar como endpoint uma url que nos retorna elogios sobre Chuck Norris (elogios, porque ninguém faz piadas com Chuck Norris).
 
 Antes de você ir para o código, como você vai rodar o código direto no Node e não no browser, será necessário instalar o node-fetch . Execute o comando abaixo caso você ainda não tenha o package.json :
+
+Aqui demonstramos 2 coisas importantes sobre a sintaxe do .then() :
+
+    Passamos como argumento uma função. Essa função também recebe 1 argumento que é a resposta do fetch .
+
+    O .then() é usado "em cadeia", um conceito chamado de chaining . Assim, podemos colocar vários .then() em cadeia, e o argumento da função interna de um será o retorno do anterior. A parte mais importante é que o .then() espera a resposta do fetch (ou o .then() anterior) ser concluída para começar a sua execução. Assim, nosso fluxo está controlado!
+
+
+Ok, mas e ser der erro em alguma requisição? O que você pode fazer em relação a isso? Agora entra o .catch() ! Vamos adicioná-lo ao código:
+
+Assim como o .then() recebe o retorno caso a requisição seja bem sucedida, o .catch() recebe o erro gerado caso a requisição não seja bem sucedida, que é passado para ele como argumento de sua função interna. Assim, quando o fetch retorna algum erro, todos os .then() são pulados e é executado o primeiro .catch() encontrado. E tem mais! O .catch() também "pega" qualquer erro que acontecer dentro de qualquer .then() anterior a ele. Por esse motivo ele é geralmente usado no final.
