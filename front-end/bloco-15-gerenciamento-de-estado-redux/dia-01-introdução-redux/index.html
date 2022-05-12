@@ -32,6 +32,7 @@
       <!-- Usando a função onclick do HTML5 -->
       <button id="previous">Previous color</button>
       <button id="next">Next color</button>
+      <button id="random">Random color</button>
     </div>
     <script>
       const ESTADO_INICIAL = {
@@ -56,6 +57,12 @@
               index:
                 state.index === 0 ? state.colors.length - 1 : state.index - 1,
             };
+          case "RANDON_COLOR":
+            return {
+              ...state,
+              colors: [...state.colors, criarCor()],
+              index: state.colors.length
+            };
           default:
             return state;
         }
@@ -74,11 +81,17 @@
         type: "PREVIOUS_COLOR",
       });
 
+      //DEFININDO UMA FUNÇÃO PARA UMA COR ALEATORIO
+      const randonColor = () => ({
+        type: "RANDON_COLOR",
+      });
+
       //SELETORES DE DOM
       const btnNext = document.querySelector("#next");
       const btnPrevious = document.querySelector("#previous");
       const valueText = document.querySelector("#value");
       const body = document.querySelector("#container");
+      const btnRandon = document.querySelector("#random");
 
       //COLOCANDO UM OUVIDOR NO BOTÂO NEXT
       btnNext.addEventListener("click", () => {
@@ -90,6 +103,10 @@
         useStore2();
       });
 
+      btnRandon.addEventListener("click", () => {
+        useStore3();
+      });
+
       //ESSA FUNÇÂO REALIZA UMA ALTEARAÇÂO QUANDO O ESTADO MUDA
       store.subscribe(() => {
         const { colors, index } = store.getState();
@@ -97,6 +114,33 @@
         valueText.textContent = colors[index];
         body.style.backgroundColor = colors[index];
       });
+
+      //FUNÇÃO CRIAR COR DISPONIBILIZADA
+      function criarCor() {
+        const oneChar = [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+        ];
+        let cor = "#";
+        const aleatorio = () => Math.floor(Math.random() * oneChar.length);
+        for (let i = 0; i < 6; i += 1) {
+          cor += oneChar[aleatorio()];
+        }
+        return cor;
+      }
 
       function useStore1() {
         store.dispatch(nextColor());
@@ -107,6 +151,11 @@
         //FUNÇÃO QUE DISPARA UMA ALTERAÇÂO DO NO STATE STORE.DISPATCH()
         store.dispatch(previousColor());
         console.log(store.getState());
+      }
+
+      function useStore3() {
+        store.dispatch(randonColor());
+        console.log(store.getState())
       }
     </script>
   </body>
