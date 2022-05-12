@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+    <style>
+      body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+
+      #container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      button {
+        height: 50px;
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <p>Color: <span id="value">white</span></p>
+      <!-- Usando a função onclick do HTML5 -->
+      <button id="previous">Previous color</button>
+      <button id="next">Next color</button>
+    </div>
+    <script>
+      const ESTADO_INICIAL = {
+        colors: ["white", "black", "red", "green", "blue", "yellow"],
+        index: 0,
+      };
+
+      //METODO PARA CRIAR UM REDUCER
+      const reducer = (state = ESTADO_INICIAL, action) => {
+        switch (action.type) {
+          case "NEXT_COLOR":
+            return {
+              ...state,
+              index:
+                state.index === state.colors.length - 1
+                  ? (state.index = 0)
+                  : state.index + 1,
+            };
+          case "PREVIOUS_COLOR":
+            return {
+              ...state,
+              index:
+                state.index === 0 ? state.colors.length - 1 : state.index - 1,
+            };
+          default:
+            return state;
+        }
+      };
+
+      //METODO PARA CRIAR UM STORE
+      const store = Redux.createStore(reducer);
+
+      //DEFININDO UMA FUNÇÃO PARA BUSCAR PROXIMA COR E ALTERAR ESTADO
+      const nextColor = () => ({
+        type: "NEXT_COLOR",
+      });
+
+      //DEFININDO UMA FUNÇÃO PARA BUSCAR COR ANTERIOR E ALTERAR ESTADO
+      const previousColor = () => ({
+        type: "PREVIOUS_COLOR",
+      });
+
+      //SELETORES DE DOM
+      const btnNext = document.querySelector("#next");
+      const btnPrevious = document.querySelector("#previous");
+      const valueText = document.querySelector("#value");
+      const body = document.querySelector("#container");
+
+      //COLOCANDO UM OUVIDOR NO BOTÂO NEXT
+      btnNext.addEventListener("click", () => {
+        useStore1();
+      });
+
+      //COLOCANDO UM OUVIDOR NO BOTÂO PREVIOUS
+      btnPrevious.addEventListener("click", () => {
+        useStore2();
+      });
+
+      //ESSA FUNÇÂO REALIZA UMA ALTEARAÇÂO QUANDO O ESTADO MUDA
+      store.subscribe(() => {
+        const { colors, index } = store.getState();
+
+        valueText.textContent = colors[index];
+        body.style.backgroundColor = colors[index];
+      });
+
+      function useStore1() {
+        store.dispatch(nextColor());
+        console.log(store.getState());
+      }
+
+      function useStore2() {
+        //FUNÇÃO QUE DISPARA UMA ALTERAÇÂO DO NO STATE STORE.DISPATCH()
+        store.dispatch(previousColor());
+        console.log(store.getState());
+      }
+    </script>
+  </body>
+</html>
