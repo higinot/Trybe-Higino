@@ -1,0 +1,17 @@
+{
+  "name": "dia-01-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node calc.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dog-names": "^2.1.0",
+    "readline-sync": "^1.4.10"
+  }
+}
