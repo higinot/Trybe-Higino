@@ -173,3 +173,191 @@ Mantendo-se na situação abordada anteriormente, sua equipe ficou sabendo de um
 
 O problema agora é outro: a ferramenta que compramos tem uma API pronta para integrar no nosso sistema, só que a interface é muito diferente da nossa. Ela exporta uma lista de cabeçalhos e uma lista de valores, não é como a nossa que já monta os dicionários direitinho… 😵
 
+Como resposta, uma pessoa colega de time acrescenta:
+
+Vai dar MUITO trabalho utilizar essa ferramenta… Vamos ter que parar tudo para adaptar o nosso sistema a esse formato! Ou pior, vamos ter que REIMPLEMENTAR a API que eles oferecem… 😳 Quem poderá nos ajudar?
+
+E aí você se lembra do Padrão Adapter.
+
+Ao analisar os códigos do sistema, já deparamos com um exemplo de classe que analisa o relatório e realiza um cálculo de média. Nota-se que o método average() espera que o retorno de load_data() contenha estruturas dict.
+
+````
+class ReportAnalyzer:
+    def __init__(self, loader):
+        self.loader = loader
+
+    def average(self):
+        # este é um dos métodos que espera uma lista de dicionários
+        data = self.loader.load_data()
+        # aqui ela soma o valor na chave final_price em cada item da lista
+        total = sum(order['final_price'] for order in data)
+        return total / len(data)
+````
+Pelo que foi comentado na reunião, a nova ferramenta (gerenciator3000) não retorna uma estrutura com dicionários, o que é comprovado ao realizar os print de seu retorno:
+
+````
+# Código exemplo para simular a API Gerenciator3000
+class ReportLoader:
+    def __init__(self):
+        self.headers = ["id", "date", "final_price"]
+        self.rows = [
+            [1337, "2020-11-20", 2350.5],
+            [1338, "2020-11-21", 4800.5],
+        ]
+
+g3000_loader = ReportLoader()
+print(g3000_loader.headers)   #  ['id', 'date', ..., 'final_price']
+print(g3000_loader.rows[0])  #  [1337, '2020-11-20', ..., 2350.5]
+````
+
+### O que você faria para aproveitar os dados e fazer o relatório?
+
+A meta é evitar reescrever o ReportAnalyzer, ou mesmo o gerenciator3000.ReportLoader, de funcionamento desconhecido.
+
+O time decidiu fazer uma classe responsável por “traduzir” esses dados do formato da ferramenta para o formato do sistema utilizado pela companhia. Essa classe poderá ser acoplada na ferramenta de relatórios. Tem-se então uma adaptação eficiente:
+
+````
+class G3000LoaderAdapter:
+    # aqui o loader é uma instância do gerenciator3000.ReportLoader original
+    def __init__(self, loader):
+        self.loader = loader
+
+    def load_data(self):
+
+        # Em python, o zip() junta uma lista de chaves em uma lista de valores
+        # e permite criar dicionário! Por exemplo:
+        # dict(zip(['nome', 'idade'], ['Juliana', 27]))
+        # {'nome': 'Juliana', 'idade': 27}
+
+        data = []
+        for row in self.loader.rows:
+            data.append(dict(zip(self.loader.headers, row)))
+        return data
+````
+
+Feito! Foi utilizado outro padrão, o Adapter. Ele permite converter a interface de uma classe em outra interface, esperada pelo cliente (isto é, o código que usa a classe em questão). O Adapter permite que interfaces incompatíveis trabalhem em conjunto — o que, de outra forma, seria impossível.
+
+Veja só como fica o código que vai utilizá-lo:
+
+````
+loader = G3000LoaderAdapter(g3000_loader)
+# o analyzer do nosso sistema recebe o adaptador como qualquer outro loader
+analyzer = ReportAnalyzer(loader)
+analyzer.average() # Agora funcionará
+````
+
+A aplicação aumenta a nível de complexidade como consequência, pois estamos adicionando novas interfaces e classes. Mas, o desacoplamento entre o código do cliente (ReportAnalyzer) e o objeto adaptado (ReportLoader) se mantém. Mudanças no objeto adaptado refletem apenas no adaptador (G3000LoaderAdapter) e não no código cliente. Logo, nenhuma lógica existente é alterada para adicionar a funcionalidade, ainda é possível substituir o serviço adaptado através da criação de novos adaptadores.
+
+### Para finalizar
+Classes se comunicam através de troca de mensagens. Entretanto, nem sempre isso é possível de se fazer diretamente: às vezes há uma incompatibilidade entre as classes (como uma classe esperar texto .CSV e outra só enviar .JSON), seja devido a um código legado ou mesmo contextos distintos.
+
+Quando as mensagens que as classes utilizam para se comunicar estão em “interfaces distintas”, não podemos simplesmente mudar a interface. Isso iria quebrar todos os outros lugares em que esta classe é utilizada! Usar uma terceira entidade, que faz a “tradução”, é normalmente a saída mais organizada e indicada.
+
+## Strategy
+
+A equipe da qual você faz parte está sendo reconhecida pela empresa! Dada a facilidade em lidar com os problemas, vocês receberam a missão de simplificar um código extenso, que sempre apresenta bugs. A manutenção do código em questão é temida por muitas pessoas desenvolvedoras.
+
+Antes de tudo, deve-se conferir o que este código deve fazer com base no relato da pessoa usuária:
+
+Depois de que o relatório é processado, costumamos emitir uma ordem de cobrança bancária para cada cliente que possui débito automático. Temos um código que realiza a comunicação com as principais instituições bancárias. Mas é frequente um dos bancos alterar a Api deles e nosso código para de funcionar, derrubando o sistema para todo mundo. 😕
+
+````
+class DebitoAutomatico:
+    @classmethod
+    def debitar(self, conta, valor, banco):
+        if banco == "itau":
+            # Codigo específico do Itaú (exemplo)
+            # connect_server_udp(itau_line)
+            # itau_line.check_system()
+            # itau_zig_zag(valor, 'Token 454')
+            print("Débito realizado pelo Itau")
+        elif banco == "Santander":
+            # Codigo específico do Santander (exemplo)
+            # connect_server_tcp(santander_line)
+            # santander_line.check_ping()
+            # metodo_106(valor)
+            print("Santander, Débito efetuado!")
+        elif banco == "Bradesco":
+            # Codigo específico do Bradesco (exemplo)
+            print("Sucesso!")
+        # ... + 150 bancos...
+        elif banco == "Caixa":
+            # Codigo específico da Caixa (exemplo)
+            print("Efetuado com sucesso, Caixa Agradece!")
+
+
+DebitoAutomatico.debitar(120, 123, "itau")
+DebitoAutomatico.debitar(110, 456, "Santander")
+DebitoAutomatico.debitar(120, 789, "Bradesco")
+````
+
+Cada banco possui um método específico. São muitas instituições bancárias e esse código é gigante, tendo mais de 8.000 linhas. Ninguém que dar manutenção nele. Podem me ajudar? 😊
+
+## Como melhorar o código? Que estratégia utilizar? É hora de pensar…
+
+Podemos observar que a classe está enorme, afinal, ela possui muitas responsabilidades já que cada banco possui uma estratégia. Que tal começar criando um Objeto/Classe para cada banco? Como possuem similaridades, é possível respeitar uma única interface — por exemplo, todos possuírem um método debitar().
+
+````
+from abc import ABC, abstractmethod
+
+
+class BancoStrategy(ABC):  # Interface
+    @classmethod
+    @abstractmethod
+    def debitar(cls):
+        raise NotImplementedError
+
+
+class ItauStrategy(BancoStrategy):
+    @classmethod
+    def debitar(cls, conta, valor):
+        # Codigos específico do Itau (exemplo)
+        print("Débito realizado pelo Itau")
+
+
+class SantanderStrategy(BancoStrategy):
+    @classmethod
+    def debitar(cls, conta, valor):
+        # Codigos específico do Santander (exemplo)
+        print("Santander, Débito efetuado!")
+
+
+class BradescoStrategy(BancoStrategy):
+    @classmethod
+    def debitar(cls, conta, valor):
+        # Codigos específico do Bradesco (exemplo)
+        print("Sucesso!")
+
+# ... métodos para todos os bancos
+````
+
+As classes foram colocadas juntas no mesmo arquivo como forma de facilitar a visualização. Considere que cada uma já pode estar em seu respectivo arquivo.
+
+O último passo será criar a classe Banco, que receberá como parâmetro a estratégia escolhida:
+
+````
+from itau_strategy import ItauStrategy
+from santander_strategy import SantanderStrategy
+from bradesco_strategy import BradescoStrategy
+
+class Banco:
+    def __init__(self, banco_strategy):
+        self.__banco_strategy = banco_strategy
+
+    def debitar(self, conta, valor):
+        self.__banco_strategy.debitar(conta, valor)
+
+Banco(ItauStrategy).debitar(120, 123)
+Banco(SantanderStrategy).debitar(110, 456)
+Banco(BradescoStrategy).debitar(120, 789)
+````
+
+Como vimos, é possível transformar um código enorme em códigos menores e organizados. Com isso:
+
+- Facilita-se, e muito, a manutenção, pois se um banco parar de funcionar, não afeta o todo (baixo acoplamento).
+- Permite-se a adição e exclusão de novos bancos com maior facilidade.
+- Tem-se um menor número de conflitos no Git, já que não é um arquivo único.
+- Mais pessoas programadoras podem trabalhar no mesmo código.
+- O código fica melhor em legibilidade, logo é melhor entendido pelas pessoas.
+- Fica aberto para extensão e fechado para alteração (SOLID Open/Closed Principle).
+
