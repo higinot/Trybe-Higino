@@ -442,3 +442,51 @@ Uma solução diferente de dataclasses poderia ser utilizar dicionários, mas es
 
 O acesso às chaves de um dicionário é feito pela sintaxe de indexação dicionario["chave"], enquanto que nas dataclasses podemos utilizar a sintaxe de acesso de atributos por dot notation: objeto.atributo.
 O uso de memória de um dicionário pode ser muito maior, já que ele precisa alocar uma maior quantidade de memória para evitar a ocorrência de colisões entre chaves.
+
+### Tuplas nomeadas
+Há um terceiro problema no uso de dicionários que as dataclasses não resolvem: a duplicidade na declaração das chaves. Se você tiver 3 dicionários com as mesmas chaves, mas valores diferentes, você armazenará as chaves 3 vezes na memória. Pouco eficiente, não? Para isso existem as tuplas, onde não existem chaves nem acessos por meio da sintaxe objeto.atributo, visto que sabemos a ordem dos elementos. Por exemplo:
+
+````
+address1 = ("Street", 0, "District")
+address2 = ("Street2", 1, "District2")
+print(address1[0], address1[1], address1[2])
+# Street 0 District
+````
+Mas assim perdemos o antigo acesso no formato address.street, etc. É aí que o Python vem com outra estrutura bem interessante para utilizar essa sintaxe e resolver os três problemas do uso de dicionários: tuplas nomeadas.
+
+Namedtuples possuem pontos positivos e negativos também. Vamos às suas características:
+
+Os nomes dos “atributos” só são definidos uma vez, ou seja, sem ocupar memória repetida como no dicionário.
+Como são valores ordenados (e não indexados por chaves como nos dicionários), ocupam bem menos memória.
+Elas podem ser utilizadas de maneiras similares às dataclasses para acesso aos dados, utilizando a sintaxe objeto.atributo.
+Infelizmente tuplas são imutáveis, ou seja, os dados serão “somente leitura”, sem a possibilidade de alteração.
+
+````
+from collections import namedtuple
+
+# Definimos a tupla nomeada passando o nome dela e uma lista com os nomes dos
+# atributos
+Address = namedtuple("Address", ["street", "number", "district"])
+
+# Criamos "instâncias" da tupla tal como criamos instâncias de classes normais
+address1 = Address("Street", 0, "District")
+# Podemos nomear os parâmetros para passá-los fora de ordem
+address2 = Address("Street2", district="District2", number=1)
+
+# Podemos acessar utilizando a sintaxe `objeto.atributo`
+print(address1.street, address1.number, address1.district)
+# Street 0 District
+
+# Observe que o acesso por índice numérico ainda funciona, pois são tuplas
+print(address1[0], address1[1], address1[2])
+# Street 0 District
+
+address1.district = "Aloha" # ! AttributeError, pois tuplas são imutáveis
+````
+
+### Mais sobre code smells
+Se quiser conhecer mais sobre code smells, existem duas fontes bem bacanas:
+
+O livro Refatoração, do Martin Fowler, é conhecido por ser uma referência no assunto.
+O Refactoring Guru é um site que contém diversos code smells, bem como suas formas de resolvê-los.
+Além disso, é bom saber que muitos linters buscam alguns code smells e impedem de deixá-los no código, o que é bem bacana, bem como o próprio vs code já tem algumas ferramentas de refatoração.
