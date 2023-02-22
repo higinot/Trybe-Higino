@@ -1,6 +1,5 @@
 import requests
 
-
 # Requisição do tipo GET
 response = requests.get("https://www.betrybe.com/")
 print(response.status_code)  # código de status
@@ -32,4 +31,3 @@ print(response.json())
 # Podemos também pedir que a resposta lance uma exceção caso o status não seja OK
 response = requests.get("http://httpbin.org/status/404")
 response.raise_for_status()
-
