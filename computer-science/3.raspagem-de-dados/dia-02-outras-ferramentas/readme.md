@@ -381,3 +381,107 @@ soup = BeautifulSoup(html_content, "html.parser")
 # Utiliza o método prettify para melhorar a visualização do conteúdo
 print(soup.prettify())
 ````
+
+O retorno desse código é o HTML da página, já formatado de uma forma muito amigável para a leitura, não concorda?
+
+## Tipos de objetos do Beautiful Soup
+O Beautiful Soup transforma um documento HTML complexo em uma árvore de objetos Python. Os quatro tipos de objetos que podemos lidar são Tag, NavigableString, BeautifulSoup e Comment. Na documentação, que está disponível inclusive em português, existe uma seção inteira dedicada aos tipos de objetos, mas destacaremos aqui apenas os dois primeiros.
+
+## Tag
+Em suma, um objeto do tipo Tag corresponde a uma tag XML ou HTML do documento original. Toda tag possui um nome acessível através de .name. Por exemplo, quando vemos header, ele é um elemento do tipo tag e o nome dessa tag é header.
+
+As tags também podem ter atributos, como classes, ids e etc. Esses atributos são acessíveis considerando tag como um dicionário e como podem receber múltiplos valores, são apresentados em forma de lista.
+
+````
+# import requests
+# from bs4 import BeautifulSoup
+
+# url = "https://quotes.toscrape.com"
+# page = requests.get(url)
+# html_content = page.text
+
+# soup = BeautifulSoup(html_content, "html.parser")
+
+
+# acessando a tag 'title'
+title = soup.title
+
+# retorna o elemento HTML da tag
+print(title)
+
+# o tipo de 'title' é tag
+print(type(title))
+
+# o nome de 'title' é title
+print(title.name)
+
+# acessando a tag 'footer'
+footer = soup.footer
+
+# acessando o atributo classe da tag footer
+print(footer['class'])
+````
+
+## NavigableString
+Uma string corresponde a um texto dentro de uma tag e esse texto fica armazenado na classe NavigableString.
+
+````
+# import requests
+# from bs4 import BeautifulSoup
+
+# url = "https://quotes.toscrape.com"
+# page = requests.get(url)
+# html_content = page.text
+
+# soup = BeautifulSoup(html_content, "html.parser")
+
+# title = soup.title
+# footer = soup.footer
+
+# retorna o elemento HTML da tag
+print(title)
+
+# Acessando a string de uma tag
+print(title.string)
+
+# Verificando o tipo dessa string
+print(type(title.string))
+````
+
+## Buscando na árvore
+Assim como nas outras ferramentas apresentadas até aqui, o Beautiful Soup também possui dois métodos principais para encontrar elementos. Eles são o find() e find_all() e a essa altura você já deve ter presumido que a diferença básica entre eles é que o primeiro retorna apenas o primeiro elemento que corresponder ao filtro, enquanto o segundo retorna a lista de todos os elementos que baterem com o filtro.
+
+Há várias possibilidades de filtros a serem utilizados dentro dos métodos descritos acima, de strings e regex, até funções, e ler a documentação é essencial para garantir que você está utilizando o método mais adequado para buscar os dados que deseja.
+
+Existem algumas informações que são bem comuns de querermos extrair, como os valores das ocorrências de determinada tag, de um atributo ou mesmo todo o texto da página.
+
+👀 De olho na dica: Ao executar o código abaixo, tente executar uma impressão por vez, deixando os demais prints comentados enquanto isso, para ter uma melhor visualização dos retornos. 😉
+
+````
+# import requests
+# from bs4 import BeautifulSoup
+
+# url = "https://quotes.toscrape.com"
+# page = requests.get(url)
+# html_content = page.text
+
+# soup = BeautifulSoup(html_content, "html.parser")
+
+# Imprime todas as ocorrências da tag "p" da página ou uma lista vazia,
+# caso nenhum elemento corresponda a pesquisa
+print(soup.find_all("p"))
+
+# Imprime o elemento com o id especificado ou "None",
+# caso nenhum elemento corresponda a pesquisa
+print(soup.find(id="quote"))
+
+# Imprime todo o texto da página
+print(soup.get_text())
+
+# Imprime todas as "divs" que possuam a classe "quote" ou uma lista vazia,
+# caso nenhum elemento corresponda a pesquisa
+print(soup.find_all("div", {"class": "quote"}))
+````
+Por debaixo dos panos, soup.find_all("p") e soup.find_all(name="p") são a mesma coisa, da mesma forma que soup.find(id="quote") é o mesmo que soup.find(attrs={"id": "quote"}). Isso se deve ao fato de argumentos nomeados diferentes de name, attrs, recursive, string e limit serem todos colocados no dicionário dentro do parâmetro attrs.
+
+Para dar uma visão geral do que podemos utilizar e da simplicidade de fazer scraping com o Beautiful Soup, vamos fazer algo similar ao que fizemos no exemplo de Selenium e raspar as informações de uma página de notícias do site Tecmundo.
