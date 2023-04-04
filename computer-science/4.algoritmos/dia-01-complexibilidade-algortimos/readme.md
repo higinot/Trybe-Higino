@@ -253,3 +253,156 @@ Para entender melhor a diferença entre um algoritmo de busca binária, logarít
 Agora que já passamos pelo conceito de Complexidade Logarítmica, vejamos o algoritmo de busca binária abaixo.
 
 De olho na dica👀: é altamente recomendado que você rode na sua máquina para entender melhor como funciona):
+
+````
+# A estrutura deve estar ordenada para que a busca binária funcione
+def binary_search(numbers, target):
+    # definir os índices
+    start = 0
+    end = len(numbers) - 1
+
+    while start <= end: # os índices podem ser no máximo iguais, o início não pode ultrapassar o fim
+        mid = (start + end) // 2 # encontro o meio
+
+        if numbers[mid] == target: # se o elemento do meio for o alvo, devolve a posição do meio
+            return mid
+        
+        if target < numbers[mid]: # se o elemento for menor, atualiza o índice do fim
+            end = mid - 1
+        else: # caso contrário, atualiza o índice do inicio
+            start = mid + 1
+    
+    return -1 # Não encontrou? Retorna -1
+
+numbers = [2, 3, 4, 10, 40]
+target = 40
+
+result = binary_search(numbers, target)
+print(f"Elemento encontrado na posição: {result}")
+````
+Observe como, a cada iteração, o algoritmo de busca binária corta o problema pela metade:
+
+primeiro ele “corta” a lista em dois e pega o elemento do meio.
+Depois ele “caminha” para o lado no elemento que procura esta e “corta” este lado novamente pela metade.
+Anota aí 🖊: Quando cortamos a entrada pela metade, a cada iteração, temos um padrão que segue a função matemática de logaritmo na base dois! Assim, nosso algoritmo é O(log n).
+
+Um logaritmo em base 2 representa o número de vezes que um valor deve ser dividido pela metade para obter 1.
+
+Dessa forma, sem precisarmos nos aprofundar na matemática, conseguimos calcular a ordem de complexidade de um algoritmo deste tipo: Quando a entrada é cortada pela metade a cada iteração temos um comportamento logarítmico!
+
+Veja abaixo um gráfico que compara o tempo de execução de um algoritmo linear e um logarítmico.
+
+## Complexidade Exponencial e Fatorial
+
+Essas complexidades caracterizam algoritmos que, para aumentos pequenos no tamanho da entrada, aumentam enormemente o número de operações a serem realizadas para serem executados e, consequentemente, seu tempo de execução. A relação do tempo de execução/espaço ocupado em cada caso é a seguinte:
+
+- Exponencial: 2ⁿ (O(2ⁿ));
+
+- Fatorial: n! (O(n!)).
+
+No caso de um algoritmo com Ordem de Complexidade Exponencial, para uma entrada de dados n que possui vinte elementos, o algoritmo realizará aproximadamente um milhão (ou 2²⁰) de operações. Para o caso fatorial, os mesmos vinte elementos rendem 24 quatrilhões de operações! (O número exato é: 2432902008176640000 operações 😨).
+
+No caso de um algoritmo com Ordem de Complexidade Exponencial, para uma entrada de dados n que possui vinte elementos, o algoritmo realizará aproximadamente um milhão (ou 2²⁰) de operações. Para o caso fatorial, os mesmos vinte elementos rendem 24 quatrilhões de operações! (O número exato é: 2432902008176640000 operações 😨).
+
+Você pode estar se perguntando: “Mas por que alguém iria escrever um algoritmo de ordem de complexidade fatorial?!”🤔
+
+Resposta: porque não há outro algoritmo conhecido que resolve o problema. Pode parecer estranho, mas há problemas para os quais ainda não possuímos uma solução otimizada.
+
+Um exemplo clássico é o problema do Caixeiro-Viajante! Veja logo abaixo:
+
+“Dada uma lista de cidades e a distância entre cada par de cidades, qual é a rota mais curta possível que visita todas as cidades exatamente uma vez e volta para a cidade de origem?”
+
+A única solução exata conhecida para este problema é a força bruta: testamos todas as possibilidades e escolher a menor rota.
+
+Agora, imagine que o caixeiro-viajante tenha que passar por três cidades: Belo Horizonte, São Paulo e Florianópolis. Ele tem as seguintes rotas possíveis:
+
+O número de rotas para 3 cidades é 3! == 3 * 2 * 1 = 6. Atualmente, o Brasil tem 5570 municípios. Se nosso caixeiro-viajante tivesse que passar por todos os municípios, isso daria a ele 5570 * 5569 * 5568 * ... * rotas.
+
+Quantos milhares de anos um computador precisaria para rodar esse algoritmo nesse caso?!😱
+
+Algoritmos que não têm solução conhecida em tempo polinomial, ou seja, cuja Ordem de Complexidade é fatorial ou exponencial e são possivelmente resolvidos somente com força bruta, pertencem a uma categoria de problemas na computação chamada problemas NP Completos.
+
+De olho na dica👀: Se quiser conhecer mais sobre essa categoria de problemas, explore nossos recursos adicionais!
+
+## Analisando algoritmos com várias estruturas de repetição
+
+Agora que já sabemos analisar a Ordem de Complexidade, vamos para alguns algoritmos.
+
+Observe o algoritmo o abaixo:
+
+````
+def calculations(n):
+    number1 = 0
+    for n1 in range(n):
+        number1 += n1
+
+    number2 = 0
+    for n1 in range(n):
+       for n2 in range(n):
+            number2 += n1 + n2
+
+    number3 = 0
+    for n1 in range(n):
+       for n2 in range(n):
+           for n3 in range(n):
+               number3 += n1 + n2 + n3
+
+    return number1, number2, number3
+
+n1, n2, n3 = calculations(100)
+print(f'{n1}, {n2}, {n3}')
+````
+
+Esse algoritmo tem três estruturas de repetição evidentes: uma linear, uma quadrática e uma cúbica.
+
+Qual é a Ordem de Complexidade dele? 🤔
+
+Resposta: A rigor, ela seria O(n + n² + n³).
+
+De olho na dica👀: Se os loops estão aninhados você os multiplica, e se estão paralelos você os soma.
+
+Podemos pensar em alguns outros exemplos:
+
+Um algoritmo de busca binária que roda três vezes teria O(3 * log n) de complexidade;
+
+Um algoritmo que roda uma busca binária num array de tamanho n para cada elemento de um array de tamanho m teria O(m * log n) de complexidade.
+
+No entanto, geralmente simplificam-se essas notações. Estamos vendo, ao longo dos nossos estudos, que ordens de complexidade diferentes, para entradas grandes, têm valores absurdamente diferentes.
+
+Imagine escrever O(n! + log(n)). Ora, para uma entrada de tamanho 8 esse número seria O(40320 + 3). Observe como o componente fatorial da equação, n! = 40320, domina completamente a ordem de complexidade. Nesse cenário, dizemos que a complexidade menor é desprezível e, então, a omitimos.
+
+Anota aí 🖊: Para valores grandes, dizer a maior ordem de complexidade do conjunto já basta para uma boa análise. Sendo assim, ao analisar várias estruturas de repetição em paralelo, responda somente com o valor da estrutura que tiver maior ordem de complexidade na hora de fazer a sua análise.
+
+## Melhor caso, pior caso e caso médio
+
+Há um último conceito importante para aprendermos aqui, antes de passarmos para a aula ao vivo e os exercícios!
+
+Você verá mais para frente durante seu aprendizado aqui na Trybe, os termos “melhor caso”, “pior caso” e “caso médio”.
+
+Eles significam o seguinte: “A depender da minha entrada, o meu algoritmo pode executar em O(1) ou O(n)“. Por exemplo, pense na busca sequencial:
+
+````
+def linear_search(numbers, target):
+    n = len(numbers) # N será a quantidade de elementos da lista
+    for index in range(0, n): # vamos iterar a lista completa
+        if numbers[index] == target: # se encontrar o elemento alvo, retorne a posição
+            return index
+
+    return -1 # Não encontrou? Retorne -1
+
+
+print(linear_search([1, 2, 3], 2))  # saída: 1
+print(linear_search([1, 2, 3], 4))  # saída: -1
+````
+
+Dizemos que, para entradas muito grandes, esse algoritmo é O(n).
+
+O que acontece, porém, caso tenhamos sorte e o número que procuramos seja o primeiro do array?🤔
+
+Resposta: Nesse caso, mesmo para uma entrada infinita, nossa complexidade será O(1). Esse é o melhor caso desse algoritmo. De forma análoga, o pior caso é o número ser o último elemento do array, ou seja O(n).
+
+Você pode estar se perguntando: “E o caso médio”? 🤔
+
+Resposta: Seria algo como O(n * 1/2), por exemplo. Nesse caso, o número que procuramos está no meio da lista. Mas, para entradas muito grandes, aprendemos a desprezar os números menos relevantes da soma, então, podemos simplificar e dizer que o caso médio é O(n) também.
+
+Diferentes algoritmos têm diferentes cenários de melhor caso, pior caso e caso médio. Veremos vários exemplos disso ao longo das próximas seções.
