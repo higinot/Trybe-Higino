@@ -2,6 +2,15 @@
 
 _SQL (Structured Query Language) é a linguagem mais usada para criar, pesquisar, extrair e também manipular dados dentro de um banco de dados relacional. Para que isso seja possível, existem comandos como o SELECT, UPDATE, DELETE, INSERT e WHERE, entre outros, que você aprenderá ao longo do curso._
 
+``docker container run --name container-mysql -e MYSQL_ROOT_PASSWORD=senha-mysql -d -p 3306:3306 mysql:8.0.31``
+
+Rodar terminal do Docker ``docker exec -it container-mysql bash``
+
+Terminal do MYSQL no Docker
+``mysql -u root -p``
+
+
+
 ## Constraints (Restrições):
 
 _Como as constraints são aplicadas às colunas das tabelas, é possível assegurar que os dados inseridos nelas serão consistentes conforme as regras definidas. Veja alguns tipos de constraints:()_
@@ -247,6 +256,35 @@ SELECT * FROM sakila.actor
 WHERE first_name IN ('PENELOPE', 'NICK', 'ED', 'JENNIFER') ;
 ```
 
+_Serve para unir as condições de OR_
+
+> O IN serve para substituir a suposição OR
+
+```javascript
+SELECT * FROM sakila.payment
+WHERE (amount = 0.99 OR amount = 2.99) AND staff_id = 2;
+```
+
+### OPERADOR - DESCRIÇÃO
+_Serve para realizar operações com operadores._
+> Como foi exibido no vídeo anterior, de forma geral, temos os seguintes operadores:
+
+````
+-- OPERADOR - DESCRIÇÃO
+=   IGUAL
+>   MAIOR QUE
+<   MENOR QUE
+>=  MAIOR QUE OU IGUAL
+<=  MENOR QUE OU IGUAL
+<>  DIFERENTE DE
+AND OPERADOR LÓGICO E
+OR  OPERADOR LÓGICO OU
+NOT NEGAÇÃO
+IS  COMPARA COM VALORES BOOLEANOS (TRUE, FALSE, NULL)
+````
+
+
+
 ### BETWEEN
 
 _Serve para fazer pesquisar dentro de um faixa inicial e final_
@@ -296,3 +334,100 @@ CREATE TABLE filme(
         content VARCHAR(255) COMMENT 'content'
         ) DEFAULT CHARSET UTF8 COMMENT 'newTable';
 ```
+
+### INSERT:
+
+> Inserindo dados em uma tabela
+
+```javascript
+INSERT INTO nome_da_tabela (coluna1, coluna2)
+VALUES ('valor_coluna1', 'valor_coluna2');
+```
+
+> Inserindo dados em uma tabela
+
+```javascript
+INSERT INTO nome_da_tabela (coluna1, coluna2)
+VALUES ('valor_coluna1', 'valor_coluna2'), ('valor_coluna1', 'valor_coluna2');
+```
+
+### INSERT SELECT
+> É possível inserir dados a partir de outra tabela usando INSERT INTO SELECT:
+
+```javascript
+INSERT INTO tabelaA (coluna1, coluna2)
+    SELECT tabelaB.coluna1, tabelaB.coluna2
+    FROM tabelaB
+    WHERE tabelaB.nome_da_coluna <> 'algumValor'
+    ORDER BY tabelaB.coluna_de_ordenacao;
+```
+
+### UPDATE 
+> Alteração de dados em uma coluna
+```javascript
+UPDATE sakila.staff
+SET first_name = 'Rannveig'
+WHERE first_name = 'Ravein';
+```
+
+### UPDATE 
+> Alteração de dados em mais de uma coluna
+```javascript
+UPDATE sakila.staff
+SET first_name = 'Rannveig', last_name = 'Jordan'
+WHERE staff_id = 4;
+```
+### UPDATE 
+> Alteração de dados em massa
+```javascript
+-- Opção 1 - Incluindo a lista de condições fixas
+UPDATE sakila.actor
+SET first_name = 'JOE'
+WHERE actor_id IN (1,2,3);
+
+-- Opção 2 - Especificando como cada entrada será alterada individualmente
+UPDATE sakila.actor
+SET first_name = (
+CASE actor_id WHEN 1 THEN 'JOE' -- se actor_id = 1, alterar first_name para 'JOE'
+              WHEN 2 THEN 'DAVIS' -- se actor_id = 2, alterar first_name para 'DAVIS'
+              WHEN 3 THEN 'CAROLINE' -- se actor_id = 3, alterar first_name para 'CAROLINE'
+          ELSE first_name -- em todos os outros casos, mantém-se o first_name
+END);
+```
+
+### SAFE UPDATES
+> --safe-updates (ou --i-am-a-dummy, sim, é uma propriedade real do MySQL) pode ser uma configuração segura para utilizar operadores de alteração de dados.
+
+````
+SET sql_safe_updates=1, sql_select_limit=1000, max_join_size=1000000;
+
+sql_select_limit=1000: limita o conjunto de resultados SELECT a 1.000 linhas, a menos que a instrução inclua LIMIT.
+
+max_join_size=1.000.000: faz com que as instruções SELECT de várias tabelas produzam um erro se o servidor estimar que deve examinar mais de 1.000.000 combinações de linhas.
+````
+
+### DELETE 
+> Removendo dados de uma tabela
+
+````
+DELETE FROM banco_de_dados.tabela
+WHERE coluna = 'valor';
+-- O WHERE é opcional. Porém, sem ele, todas as linhas da tabela seriam excluídas.
+````
+
+### DELETE VS TRUNCATE
+> Se tem certeza absoluta de que quer excluir os registros de uma tabela de uma maneira mais rápida, para efeitos de testes ou necessidade, o TRUNCATE é mais rápido que o DELETE. A função principal e única do TRUNCATE é de limpar (excluir todos os registros) de uma tabela, não sendo possível especificar o WHERE. Por isso, o TRUNCATE só pode ser usado nesse cenário.
+
+``TRUNCATE banco_de_dados.tabela;``
+
+### RECAPITULANDO
+> Todos os conceitos apresentados para se operar as informações em um banco de dados podem ser resumidos pelo conceito de CRUD.
+
+- Adicionar novas informações ao banco de dados, utilizamos o conceito CREATE com o comando:
+``INSERT INTO banco.tabela (coluna1, coluna2) VALUES (‘valor_A’, ‘valor_B’);``
+- Obter as informações armazenadas no bando de dados, utilizamos o conceito READ, com o comando: ``SELECT colunaA, colunaB FROM banco.tabela;``
+- Atualizar informações existentes no banco de dados, utilizamos o conceito UPDATE com o comando: ``UPDATE banco.tabela SET coluna1='valor' WHERE alguma_condicao;``
+-Remover informações existentes no banco de dados, utilizamos o conceito DELETE com o comando: ``DELETE FROM banco.tabela WHERE alguma_condicao;``
+
+
+
