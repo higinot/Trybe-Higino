@@ -13,7 +13,7 @@ Terminal do MYSQL no Docker
 
 >O MySQL possui algumas funções de manipulação de texto que facilitam essas tarefas.
 
-````
+```javascript
 -- Converte o texto da string para CAIXA ALTA
 SELECT UCASE('Oi, eu sou uma string');
 
@@ -46,7 +46,7 @@ SELECT SUBSTRING('Oi, eu sou uma string', 5);
 ## Condicionais
 > Principais comandos de controle de fluxo, como o IF e o CASE.
 
-````
+```javascript
 -- Sintaxe:
 SELECT IF(condicao, valor_se_verdadeiro, valor_se_falso);
 
@@ -63,7 +63,7 @@ LIMIT 20;
 ````
 >Em situações em que é preciso comparar mais de uma condição, é preferível utilizar o CASE.
 
-````
+```javascript
 -- Sintaxe:
 SELECT CASE
   WHEN condicao THEN valor
@@ -100,7 +100,7 @@ LIMIT 10;
 ### Principais
 > Adição, subtração, multiplicação e divisão
 
-````
+```javascript
 SELECT rental_duration + rental_rate FROM sakila.film LIMIT 10;
 SELECT rental_duration - rental_rate FROM sakila.film LIMIT 10;
 SELECT rental_duration / rental_rate FROM sakila.film LIMIT 10;
@@ -109,7 +109,7 @@ SELECT rental_duration * rental_rate FROM sakila.film LIMIT 10;
 ### DIV
 > O DIV retorna o resultado inteiro de uma divisão, ignorando as casas decimais de um número. Veja os exemplos abaixo:
 
-````
+```javascript
 SELECT 10 DIV 3; -- 3
 SELECT 10 DIV 2; -- 5
 SELECT 14 DIV 3; -- 4
@@ -119,7 +119,7 @@ SELECT 13 DIV 2; -- 6
 ### MOD
 > Já o operador MOD retorna o resto de uma divisão como resultado. Por exemplo:
 
-````
+```javascript
 SELECT 10 MOD 3; -- 1
 SELECT 10 MOD 2; -- 0
 SELECT 14 MOD 3; -- 2
@@ -129,7 +129,7 @@ SELECT 10.5 MOD 2; -- 0.5, ou seja, 2 + 2 + 2 + 2 + 2 = 10, restando 0.5
 ### ROUND
 >  ROUND arredonda os números de acordo com sua parte decimal.
 
-````
+```javascript
 -- Podemos omitir ou especificar quantas casas decimais queremos
 SELECT ROUND(10.4925); -- 10
 SELECT ROUND(10.5136); -- 11
@@ -140,7 +140,7 @@ SELECT ROUND(10.4925, 3); -- 10.493
 ### CEIL
 >  O arredondamento sempre para cima pode ser feito com o CEIL:
 
-````
+```javascript
 SELECT CEIL(10.51); -- 11
 SELECT CEIL(10.49); -- 11
 SELECT CEIL(10.2); -- 11
@@ -148,7 +148,7 @@ SELECT CEIL(10.2); -- 11
 ### FLOOR
 >  O arredondamento sempre para baixo pode ser feito com o FLOOR:
 
-````
+```javascript
 SELECT FLOOR(10.51); -- 10
 SELECT FLOOR(10.49); -- 10
 SELECT FLOOR(10.2); -- 10
@@ -156,7 +156,7 @@ SELECT FLOOR(10.2); -- 10
 ### FLOOR
 >  O arredondamento sempre para baixo pode ser feito com o FLOOR:
 
-````
+```javascript
 SELECT FLOOR(10.51); -- 10
 SELECT FLOOR(10.49); -- 10
 SELECT FLOOR(10.2); -- 10
@@ -165,14 +165,14 @@ SELECT FLOOR(10.2); -- 10
 ### Exponenciação
 >  Para cálculos de exponenciação, podemos utilizar a função POW.
 
-````
+```javascript
 SELECT POW(2, 2); -- 4
 SELECT POW(2, 4); -- 16
 ````
 ### Raiz quadrada
 >  Para cálculos de exponenciação, podemos utilizar a função SQRT.
 
-````
+```javascript
 SELECT SQRT(9); -- 3
 SELECT SQRT(16); -- 4
 ````
@@ -180,7 +180,7 @@ SELECT SQRT(16); -- 4
 ### Randon
 >  Para situações em que se faz necessário gerar valores aleatórios, podemos usar a função RAND, em conjunto com as funções anteriores.
 
-````
+```javascript
 -- Para gerar um valor aleatório entre 0 e 1:
 SELECT RAND();
 
@@ -193,7 +193,7 @@ SELECT ROUND(7 + (RAND() * 6));
 ## Trabalhando com datas
 > Conseguimos fazer algumas coisas legais, como, por exemplo, consultar data e hora atuais usando as seguintes funções:
 
-````
+```javascript
 SELECT CURRENT_DATE(); -- YYYY-MM-DD
 SELECT NOW(); -- YYYY-MM-DD HH:MM:SS
 ````
@@ -201,7 +201,7 @@ SELECT NOW(); -- YYYY-MM-DD HH:MM:SS
 ### Calcular a diferença entre datas
 > Também podemos calcular a diferença em dias entre duas datas usando o DATEDIFF e a diferença de tempo entre dois horários usando o TIMEDIFF. Em ambos os casos, o segundo valor é subtraído do primeiro para calcular o resultado.
 
-````
+```javascript
 -- 30, ou seja, a primeira data é 30 dias depois da segunda
 SELECT DATEDIFF('2020-01-31', '2020-01-01');
 
@@ -218,7 +218,7 @@ SELECT TIMEDIFF('2021-08-11 08:30:10', '2021-08-01 09:30:10');
 ## Funções de agregação
 >Utilizando as funções de agregação AVG, MIN, MAX, SUM e COUNT
 
-````
+```javascript
 -- Usando a coluna replacement_cost (valor de substituição), vamos encontrar:
 SELECT AVG(replacement_cost) FROM sakila.film; -- 19.984000 (Média entre todos registros)
 SELECT MIN(replacement_cost) FROM sakila.film; -- 9.99 (Menor valor encontrado)
@@ -232,7 +232,7 @@ SELECT COUNT(replacement_cost) FROM sakila.film; -- 1000 registros encontrados (
 
 ### GROUP BY
 > O GROUP BY pode ser construído da seguinte forma:
-````
+```javascript
 SELECT coluna(s) FROM tabela
 GROUP BY coluna(s);
 ````
@@ -240,7 +240,7 @@ GROUP BY coluna(s);
 ### HAVING
 > Podemos usar o HAVING para filtrar resultados agrupados, assim como usamos o SELECT...WHERE para filtrar resultados individuais.
 
-`````
+```javascript
 SELECT first_name, COUNT(*)
 FROM sakila.actor
 GROUP BY first_name
@@ -265,7 +265,7 @@ HAVING 'nomes cadastrados' > 2;
 ## INNER JOIN
 > Como foi visto no vídeo, o INNER JOIN permite retornar todos os resultados em que a condição da cláusula ON for satisfeita. A sintaxe de um INNER JOIN é a seguinte:
 
-````
+```javascript
 SELECT t1.coluna, t2.coluna
 FROM tabela1 AS t1
 INNER JOIN tabela2 AS t2
@@ -273,7 +273,7 @@ ON t1.coluna_em_comum = t2.coluna_em_comum;
 ````
 > Podemos tornar a query mais legível com um alias, além de evitar o erro de ambiguidade de coluna:
 
-````
+```javascript
 SELECT a.first_name, a.actor_id, f.actor_id
 FROM sakila.actor AS a
 INNER JOIN sakila.film_actor AS f
@@ -286,7 +286,7 @@ ON a.actor_id = f.actor_id;
 ### LEFT JOIN
 > LEFT JOIN: quando utilizamos o LEFT JOIN, focamos a tabela da esquerda. São retornados todos os registros da tabela da esquerda e valores correspondentes da tabela da direita, caso existam. Valores que não possuem correspondentes são exibidos como nulos.
 
-````
+```javascript
 SELECT
     c.customer_id,
     c.first_name,
@@ -303,7 +303,7 @@ ORDER BY c.last_name;
 ### RIGHT JOIN
 > RIGHT JOIN: quando utilizamos o RIGHT JOIN, focamos a tabela da direita. São retornados todos os registros da tabela da direita e valores correspondentes da tabela da esquerda, caso existam. Valores que não possuem correspondentes são exibidos como nulos.
 
-````
+```javascript
 SELECT
     c.customer_id,
     c.first_name,
@@ -320,7 +320,7 @@ ORDER BY c.last_name;
 ### INNER JOIN
 > INNER JOIN: finalmente, temos o INNER JOIN, que foca em trazer somente os registros que possuem valores correspondentes em ambas as tabelas.
 
-````
+```javascript
 SELECT
     c.customer_id,
     c.first_name,
@@ -337,7 +337,7 @@ ORDER BY c.last_name;
 ###  UNION & UNION ALL
 > O UNION remove os dados duplicados, enquanto o UNION ALL os mantém. Observe que, para usar o comando corretamente, a mesma quantidade de colunas deve ser utilizada.
 
-````
+```javascript
 (SELECT first_name, "actor" as 'actor'
 FROM actor LIMIT 5)
 UNION ALL
@@ -349,7 +349,7 @@ FROM customer LIMIT 10)
 > Uma SUBQUERY é uma query aninhada que é avaliada dentro de um par de parênteses. Ela pode conter expressões simples, como adições e subtrações, mas não se limita a isso, uma vez que podemos utilizar praticamente todos os comandos já vistos até o momento dentro de uma SUBQUERY.
 
 1. Preenchendo uma coluna de um SELECT por meio de uma SUBQUERY.
-````
+```javascript
 SELECT
     address,
     district,
@@ -363,7 +363,7 @@ FROM sakila.address;
 
 2. Filtrando resultados com WHERE usando como base os dados retornados de uma SUBQUERY.
 
-````
+```javascript
 SELECT address, district
 FROM sakila.address
 WHERE city_id IN (
@@ -375,7 +375,7 @@ WHERE city_id IN (
 
 4. Usando uma tabela externa, de fora da SUBQUERY, dentro dela.
 
-````
+```javascript
 SELECT
     first_name,
     (
@@ -385,6 +385,196 @@ SELECT
     ) AS address
 FROM sakila.customer AS tabela_externa;
 ````
+
+## STORED PRODCEDURE e STORE FUNCTION
+
+>Podemos armazenar blocos de códigos (queries) para serem usados posteriormente no MySQL de duas maneiras, são elas:
+
+ - Stored procedure;
+ - Stored function.
+
+A palavra stored significa armazenado. Como o próprio nome já indica, o código fica armazenado no servidor do banco de dados para que possa ser utilizado sem a necessidade de reescrever uma funcionalidade.
+
+#### Estrutura padrão de uma *store procedure*:
+```javascript
+USE banco_de_dados; -- obrigatório para criar a procedure no banco correto
+DELIMITER $$ -- definindo delimitador
+
+CREATE PROCEDURE nome_da_procedure(@parametro1, @parametro2, ..., @parametroN) -- parâmetros
+BEGIN -- delimitando o início do código SQL
+
+END $$ -- delimitando o final do código SQL
+
+DELIMITER ; -- muda o delimitador de volta para ; - o espaço entre DELIMITER e o ';' é necessário
+````
+
+Exemplo:
+```javascript
+Copiar
+USE sakila;
+DELIMITER $$
+
+CREATE PROCEDURE ShowAllActors()
+BEGIN
+	SELECT * FROM sakila.actor;
+END $$
+
+DELIMITER ;
+
+-- Como usar:
+
+CALL ShowAllActors();
+````
+
+### Elementos das _Stored Procedures_
+
+> Verifique os elementos de uma stored procedures no passo a passo a seguir:
+
+1. Delimiter: A palavra-chave DELIMITER é usada para definir qual símbolo representa o final da procedure declarada. Aqui estamos usando $$,
+2. Variáveis: O MySQL possui a funcionalidade de criar e usar variáveis, assim como em outras linguagens de programação. Essas variáveis também podem ser usadas em procedures.
+3. Tipos de dados: Existem vários tipos de dados no MySQL que vão além de apenas numéricos e strings. É relevante que você tenha uma noção básica, sabendo que esses tipos no MySQL são determinados por meio de algumas características:.
+    - VARCHAR: Uma string não binária de comprimento variavel.
+    - CHAR: Uma string não binaria (caractere) de comprimento fixo.
+    - TEXT: Uma pequena string não binária.
+    - TINYINT: Um número interio muito pequeno.
+    - INT: Um inteiro padrão.
+    - BIGINT: Um grande número inteiro.
+    - DECIMAL: Um número de ponto fixo.
+
+### Procedure com parâmetros de entrada (IN):
+>Para criar procedures com funcionalidades mais elaboradas, podemos passar parâmetros de entrada. Ao definir um parâmetro do tipo IN, podemos usá-lo e modificá-lo dentro da nossa procedure.
+
+```javascript
+USE sakila;
+DELIMITER $$
+
+CREATE PROCEDURE ShowActorsWithSyllable(IN syllable VARCHAR(100))
+BEGIN
+    SELECT *
+    FROM sakila.actor
+    WHERE first_name LIKE CONCAT('%', syllable, '%');
+END $$
+
+DELIMITER ;
+
+-- Como usar:
+
+CALL ShowActorsWithSyllable('lope');
+````
+
+### Procedure com parâmetros de saída (OUT):
+> O parâmetro OUT é útil quando você precisa que algo seja avaliado ou encontrado dentro de uma query e te retorne esse valor para que algo adicional possa ser feito com ele.
+
+```javascript
+USE sakila;
+DELIMITER $$
+
+CREATE PROCEDURE ShowAverageRentalDurationOfMovie(
+    IN film_name VARCHAR(300),
+    OUT media_aluguel_em_dias DOUBLE
+)
+BEGIN
+    SELECT AVG(rental_duration) INTO media_aluguel_em_dias
+    FROM sakila.film
+    WHERE title = film_name;
+END $$
+
+DELIMITER ;
+
+-- Como usar:
+
+CALL ShowAverageRentalDurationOfMovie('ACADEMY DINOSAUR', @media_de_dias);
+SELECT @media_de_dias;
+````
+
+### Procedure com parâmetros de entrada-saída (IN-OUT):
+>O IN-OUT deve ser usado quando é necessário que um parâmetro possa ser modificado tanto antes como durante a execução de uma procedure.
+
+```javascript
+USE sakila;
+DELIMITER $$
+
+CREATE PROCEDURE NameGenerator(INOUT film_name VARCHAR(300))
+BEGIN
+    SELECT CONCAT('ULTRA ', film_name, ' THE BEST MOVIE OF THE CENTURY')
+    INTO film_name;
+END $$
+
+DELIMITER ;
+
+-- Como usar:
+
+SELECT 'ACE GOLDFINGER' INTO @movie_title;
+CALL NameGenerator(@movie_title);
+SELECT @movie_title;
+````
+
+## Stored Functions
+
+> Stored functions podem ser executadas com o comando SELECT. Ao criá-las, temos que definir o tipo de retorno que sua função possui.
+
+```javascript
+USE banco_de_dados; -- obrigatório para criar a função no banco correto
+DELIMITER $$
+
+CREATE FUNCTION nome_da_function(parametro1, parametro2, ..., parametroN)
+RETURNS tipo_de_dado tipo_de_retorno
+BEGIN
+    query_sql
+    RETURN resultado_a_ser_retornado;
+END $$
+
+DELIMITER ;
+````
+
+>Exemplo: Uma stored function que exibe a quantidade de filmes em que um determinado ator ou atriz atuou:
+
+```javascript
+USE sakila;
+DELIMITER $$
+
+CREATE FUNCTION MoviesWithActor(actor_id int)
+RETURNS INT READS SQL DATA
+BEGIN
+    DECLARE movie_total INT;
+    SELECT COUNT(*)
+    FROM sakila.film_actor
+    WHERE sakila.film_actor.actor_id = actor_id INTO movie_total;
+    RETURN movie_total;
+END $$
+
+DELIMITER ;
+
+-- Como usar:
+
+SELECT MoviesWithActor(1);
+````
+> Exemplo: Uma stored function que exibe o nome completo de um ator ou de uma atriz, dado seu id como parâmetro:
+
+```javascript
+USE sakila;
+DELIMITER $$
+
+CREATE FUNCTION GetFullName(id INT)
+RETURNS VARCHAR(200) READS SQL DATA
+BEGIN
+    DECLARE full_name VARCHAR(200);
+    SELECT concat(first_name, ' ', last_name)
+    FROM sakila.actor
+    WHERE actor_id = id
+    LIMIT 1
+    INTO full_name ;
+    RETURN full_name;
+END $$
+
+DELIMITER ;
+
+SELECT GetFullName(51);
+````
+
+
+
+
 
 
 

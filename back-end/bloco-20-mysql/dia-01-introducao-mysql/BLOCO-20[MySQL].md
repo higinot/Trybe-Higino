@@ -398,7 +398,7 @@ END);
 ### SAFE UPDATES
 > --safe-updates (ou --i-am-a-dummy, sim, é uma propriedade real do MySQL) pode ser uma configuração segura para utilizar operadores de alteração de dados.
 
-````
+```javascript
 SET sql_safe_updates=1, sql_select_limit=1000, max_join_size=1000000;
 
 sql_select_limit=1000: limita o conjunto de resultados SELECT a 1.000 linhas, a menos que a instrução inclua LIMIT.
@@ -409,7 +409,7 @@ max_join_size=1.000.000: faz com que as instruções SELECT de várias tabelas p
 ### DELETE 
 > Removendo dados de uma tabela
 
-````
+```javascript
 DELETE FROM banco_de_dados.tabela
 WHERE coluna = 'valor';
 -- O WHERE é opcional. Porém, sem ele, todas as linhas da tabela seriam excluídas.
