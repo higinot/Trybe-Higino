@@ -141,3 +141,134 @@ quando todas as promise forem rejeitadas: retorna uma promise rejeitada com o ob
 - Parâmetro recebido: array de promises
 
 - Retorno: retorna uma única promise que é resolvida quando todas as promises passadas forem finalizadas. A promise é retornada com um array de objetos que contém o valor retornado por cada uma das promises originais.
+
+## Async e Await
+
+### O funcionamento do operador await
+Quando colocamos o operador await no JavaScript, a execução do código é pausada até que a referida Promise seja resolvida. Isso significa que o código não será executado além daquela linha enquanto a Promise estiver pendente.
+
+````
+const a = funcaoQueRetornaPromise();
+const b = await funcaoQueRetornaPromise();
+
+console.log(a) // Aqui o console vai imprimir a Promise em si.
+console.log(b) // Aqui o console vai imprimir o resultado da Promise
+````
+
+No código acima, a variável a será uma Promise (que pode inclusive ainda estar pendente). A execução do código não é pausada nesse caso. Por essa razão, o valor da variável é uma Promise. Por outro lado, na variável b, o código é pausado até que a Promise seja resolvida (ou rejeitada) e o valor da variável será o resultado dessa Promise, e não a Promise em si.
+
+⚠️ Um cuidado que devemos ter é que, para usar o operador await dentro de uma função, é necessário que ela seja uma função assíncrona (com o operador async).
+
+## Funções Assíncronas
+
+Uma função assíncrona é uma função que retorna uma Promise. Nós podemos tornar qualquer função assíncrona simplesmente adicionando o operador async antes da sua declaração. Por exemplo:
+
+````
+// Essa função retorna o número 1.
+function foo() {
+  return 1;
+}
+
+// Essa função retorna uma Promise (que resolve no número 1).
+async function bar() {
+  return 1;
+}
+````
+
+## Lidando com Erros
+
+Aprendemos que podemos tratar os erros lançados dentro de uma Promise com o operador .catch(). Entretanto, quando usamos a sintaxe de async/await geralmente lidamos com erros usando blocos try/catch.
+
+No nosso exemplo do cep:
+
+````
+const cep = '30130-010';
+try {
+  const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+  const data = await response.json();
+  console.log(data);
+} catch(error) {
+  console.log(error)
+}
+````
+
+Na aplicação acima, o código tenta (try) fazer a requisição. Caso haja um erro, esse erro é capturado (catch) e, no nosso caso, escolhemos tratar o erro imprimindo no nosso console. Você poderá tratar o erro da maneira como desejar (por exemplo, com um alerta, enviando para a base de dados, logs, etc).
+
+## Testes assíncronos
+
+### A aplicação que iremos testar
+Antes de testar nossa aplicação, vamos fazer algumas modificações e refatorações para:
+
+1. Extrair para um arquivo separado a lógica assíncrona de busca de cep (separando, assim, as responsabilidades das funções);
+2. Lançar um erro quando nenhum valor for passado para o cep;
+3. Lançar um erro lançado quando passamos um cep inválido.
+
+### Quando a requisição é bem sucedida, ela deverá retornar os dados esperados
+
+No teste abaixo, é importante adicionarmos o operador async no segundo argumento da função test(). Isso faz com que seja possível usarmos o operador await para esperarmos os dados da nossa função getAddressFromCep(), que é assíncrona.
+
+````
+test('deve retornar os dados quando passamos um cep válido', async () => {
+  const address = await getAddressFromCep('30130010');
+  expect(address.cep).toBe('30130-010');
+  expect(address.logradouro).toBe('Praça Sete de Setembro');
+  expect(address.bairro).toBe('Centro');
+  expect(address.uf).toBe('MG');
+});
+````
+Em seguida vamos testar que nossa função retorna os dados esperados independentemente de passarmos o cep com ou sem hífen:
+
+````
+test('deve aceitar cep com hífen ou sem hífen', async () => {
+  let address = await getAddressFromCep('30130010');
+  expect(address.cep).toBe('30130-010');
+
+  address = await getAddressFromCep('30130-010');
+  expect(address.cep).toBe('30130-010');
+});
+````
+
+### Quando a requisição é rejeitada, ela deverá retornar erro
+
+Agora precisamos realizar os testes caso a requisição à API não seja bem sucedida.
+
+### Ao passar um cep vazio
+
+Além de utilizarmos async/await como nos testes anteriores, nesse caso precisaremos também de um matcher especial do Jest. Como estamos testando a rejeição de uma Promise, precisamos usar o helper rejects combinado com o matcher toThrow, que testará o erro que foi lançado.
+
+Neste caso também estamos testando a mensagem de erro lançada. Por esse motivo precisamos criar um erro com a mensagem esperada, utilizando a sintaxe new Error('Mensagem de erro'), junto do matcher toThrow.
+
+````
+test('Deve lançar erro "Você precisa passar um CEP" quando passar cep vazio', async () => {
+  const emptyCep = '';
+
+  await expect(getAddressFromCep(emptyCep)).rejects.toThrow(
+    new Error('Você precisa passar um CEP')
+  );
+});
+````
+
+### Ao passar um cep inválido
+
+Da mesma forma, também vamos testar ceps inválidos. Nesse caso estamos apenas testando que haverá um erro, e não a mensagem do erro. Por essa razão, podemos usar o toThrow sem nenhum argumento.
+
+````
+test('Deve lançar erro quando passar cep inválido', async () => {
+  const invalidCep = 'XXXXX-XXX';
+  const invalidCepLessDigits = '00000-00';
+  const invalidCepMoreDigits = '00000-0000';
+
+  await expect(getAddressFromCep(invalidCep)).rejects.toThrow();
+  await expect(getAddressFromCep(invalidCepLessDigits)).rejects.toThrow();
+  await expect(getAddressFromCep(invalidCepMoreDigits)).rejects.toThrow();
+});
+````
+
+É importante perceber que, em alguns testes, não estamos testando nossa aplicação, mas sim o retorno da API. Para testarmos a nossa aplicação de fato, precisamos utilizar o mock da função fetch. Mas tenha tranquilidade, uma vez que iremos aprender esse tópico mais à frente no curso.
+
+O mais comum é testarmos nossa aplicação com mocks. Porém, testar o retorno da API, como fizemos nos testes acima, pode ser válido quando queremos garantir que estamos recebendo os dados corretos. Entretanto, é importante saber que, ao testarmos a API:
+
+Os testes ficam mais demorados, uma vez que dependem de resposta externa;
+Os testes podem quebrar quando há indisponibilidade desta API;
+Algumas APIs possuem limites de requisição que podem ser feitas - fique atento a eles.
+O Jest possui também outras formas de testes assíncronos. Você pode verificar na documentação da biblioteca.
