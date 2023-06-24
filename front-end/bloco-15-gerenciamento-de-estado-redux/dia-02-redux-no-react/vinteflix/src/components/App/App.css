@@ -1,0 +1,11 @@
+.App{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-wrapper{
+  display: flex;
+  max-width: 600px;
+  width: 80%;
+}
